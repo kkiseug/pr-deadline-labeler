@@ -7,6 +7,6 @@ RUN gradle jar --no-daemon
 FROM eclipse-temurin:21-jre-jammy
 
 WORKDIR /app
-COPY --from=build /app/build/libs/pr-deadline-labeler-1.0.0.jar app.jar
+COPY --from=build /app/build/libs/deadline-labeler-1.0.0.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
