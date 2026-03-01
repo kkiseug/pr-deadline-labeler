@@ -5,12 +5,18 @@ import java.time.temporal.ChronoUnit;
 
 public class LabelPolicy {
 
-    public String resolve(LocalDate baseDate, LocalDate today) {
-        long between = ChronoUnit.DAYS.between(baseDate, today);
+    private final Long deadLine;
 
-        if (between == 0) return "D-2";
-        if (between == 1) return "D-1";
-        if (between == 2) return "D-Day";
-        return "OVER-DUE";
+    public LabelPolicy(Long deadLine) {
+        this.deadLine = deadLine;
+    }
+
+    public String resolve(LocalDate baseDate, LocalDate today) {
+        Long between = ChronoUnit.DAYS.between(baseDate, today);
+        Long daysLeft = deadLine - between;
+
+        if (daysLeft.equals(0L)) return "D-Day";
+        if (daysLeft.compareTo(0L) < 0) return "OVER-DUE";
+        return "D-" + daysLeft;
     }
 }

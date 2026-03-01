@@ -15,6 +15,7 @@ public class Main {
         String repo = System.getenv("GITHUB_REPOSITORY");
         String baseDate = System.getenv("INPUT_BASE-DATE");
         String prNumber = System.getenv("INPUT_PR-NUMBER");
+        String deadline = System.getenv("INPUT_DEADLINE-DAYS");
 
         System.out.println("repo: " + repo);
         System.out.println("baseDate: " + baseDate);
@@ -23,7 +24,7 @@ public class Main {
         HttpClient httpClient = HttpClient.newHttpClient();
         LabelAttacher labelAttacher = new GithubLabelAttacher(httpClient, token, repo);
         PullRequestRepository pullRequestRepository = new GithubPullRequestRepository(httpClient, token, repo);
-        LabelPolicy labelPolicy = new LabelPolicy();
+        LabelPolicy labelPolicy = new LabelPolicy(Long.parseLong(deadline));
         LabelingService labelingService = new LabelingService(labelAttacher, pullRequestRepository, labelPolicy);
 
         LocalDate now = LocalDate.now();
