@@ -41,7 +41,7 @@ public class LabelPolicyTest {
     }
 
     @Test
-    void 생성_후_사흘이_지나면_OVER_DUE_라벨을_반환한다() {
+    void 생성_후_사흘_이상이_지나면_OVER_DUE_라벨을_반환한다() {
         LocalDate createdAt = LocalDate.of(2026, 3, 1);
         LocalDate today = LocalDate.of(2026, 3, 6);
         LabelPolicy labelPolicy = new LabelPolicy();
