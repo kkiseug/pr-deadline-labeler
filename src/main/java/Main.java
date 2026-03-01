@@ -6,6 +6,7 @@ import infrastructure.GithubLabelAttacher;
 import infrastructure.GithubPullRequestRepository;
 import java.net.http.HttpClient;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
@@ -24,7 +25,7 @@ public class Main {
             LabelPolicy labelPolicy = new LabelPolicy(Long.parseLong(deadline));
             LabelingService labelingService = new LabelingService(labelAttacher, pullRequestRepository, labelPolicy);
 
-            LocalDate now = LocalDate.now();
+            LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
             if (prNumber == null || prNumber.isEmpty()) {
                 labelingService.attachLabels(now);
             } else {
