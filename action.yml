@@ -1,0 +1,14 @@
+name: 'PR Deadline Labeler'
+description: 'PR 코드리뷰 마감일 기반으로 라벨을 자동 부착합니다.'
+
+inputs:
+  github-token:
+    required: true
+  base-date:
+    required: true
+  pr-number:
+    required: false
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
