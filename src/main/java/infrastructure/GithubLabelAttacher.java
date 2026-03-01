@@ -7,6 +7,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 
 public class GithubLabelAttacher implements LabelAttacher {
@@ -39,7 +40,9 @@ public class GithubLabelAttacher implements LabelAttacher {
             .build();
 
         try {
-            httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
+            System.out.println("라벨 부착 응답 코드: " + response.statusCode());
+            System.out.println("라벨 부착 응답 바디: " + response.body());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("라벨 부착 실패", e);
         }

@@ -16,6 +16,10 @@ public class Main {
         String baseDate = System.getenv("INPUT_BASE-DATE");
         String prNumber = System.getenv("INPUT_PR-NUMBER");
 
+        System.out.println("repo: " + repo);
+        System.out.println("baseDate: " + baseDate);
+        System.out.println("prNumber: " + prNumber);
+
         HttpClient httpClient = HttpClient.newHttpClient();
         LabelAttacher labelAttacher = new GithubLabelAttacher(httpClient, token, repo);
         PullRequestRepository pullRequestRepository = new GithubPullRequestRepository(httpClient, token, repo);
