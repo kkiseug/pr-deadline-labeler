@@ -76,7 +76,6 @@ jobs:
         uses: kkiseug/pr-deadline-labeler@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          base-date: ${{ github.event.pull_request.created_at }}
           deadline-days: ${{ env.DEADLINE_DAYS }}
 
       - name: Reset label on review submitted
@@ -103,9 +102,9 @@ permissions:
 
 ## Inputs
 
-| Input | 필수 여부 | 기본값 | 설명 |
-|-------|----------|--------|------|
-| `github-token` | ✅ 필수 | - | GitHub 접근을 위한 토큰 |
-| `base-date` | ✅ 필수 | - | 라벨 계산 기준일 (PR 생성일 또는 리뷰 등록일) |
-| `pr-number` | ❌ 선택 | - | 업데이트할 PR 번호 (없으면 전체 PR 업데이트) |
-| `deadline-days` | ❌ 선택 | `2` | 코드리뷰 최대 마감일 |
+| Input           | 필수 여부 | 기본값 | 설명                           |
+|-----------------|----------|--------|------------------------------|
+| `github-token`  | ✅ 필수 | - | GitHub 접근을 위한 토큰             |
+| `base-date`     | ❌ 선택 | - | 라벨 계산 기준일 (PR 생성일 또는 리뷰 등록일, cron 시 불필요) |
+| `pr-number`     | ❌ 선택 | - | 업데이트할 PR 번호 (없으면 전체 PR 업데이트) |
+| `deadline-days` | ❌ 선택 | `2` | 코드리뷰 최대 마감일                  |

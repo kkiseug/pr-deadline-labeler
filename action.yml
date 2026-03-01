@@ -6,7 +6,7 @@ inputs:
     required: true
     description: 'Github 접근을 위한 토큰'
   base-date:
-    required: true
+    required: false
     description: '업데이트를 위한 기준일자'
   pr-number:
     required: false
