@@ -9,8 +9,8 @@ public class LabelPolicy {
         long between = ChronoUnit.DAYS.between(createdAt, today);
 
         if (between == 0) return "D-2";
-        else if (between == 1) return "D-1";
-        else if (between == 2) return "D-Day";
+        if (between == 1) return "D-1";
+        if (between == 2) return "D-Day";
         return "OVER-DUE";
     }
 }
