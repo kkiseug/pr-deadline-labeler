@@ -64,7 +64,7 @@ jobs:
 
       - name: Attach label on PR opened
         if: github.event_name == 'pull_request'
-        uses: {YOUR_GITHUB_USERNAME}/pr-deadline-labeler@v1
+        uses: kkiseug/pr-deadline-labeler@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           base-date: ${{ github.event.pull_request.created_at }}
@@ -73,7 +73,7 @@ jobs:
 
       - name: Update labels on schedule
         if: github.event_name == 'schedule'
-        uses: {YOUR_GITHUB_USERNAME}/pr-deadline-labeler@v1
+        uses: kkiseug/pr-deadline-labeler@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           base-date: ${{ github.event.pull_request.created_at }}
@@ -81,7 +81,7 @@ jobs:
 
       - name: Reset label on review submitted
         if: github.event_name == 'pull_request_review'
-        uses: {YOUR_GITHUB_USERNAME}/pr-deadline-labeler@v1
+        uses: kkiseug/pr-deadline-labeler@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           base-date: ${{ github.event.review.submitted_at }}
