@@ -43,8 +43,6 @@ public class GithubPullRequestRepository implements PullRequestRepository {
 
         try {
             HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(StandardCharsets.UTF_8));
-            System.out.println("status: " + response.statusCode());
-            System.out.println("body: " + response.body());
 
             Gson gson = new Gson();
             List<PullRequestResponse> dto = gson.fromJson(
