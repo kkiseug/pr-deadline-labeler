@@ -1,0 +1,39 @@
+name: PR Deadline Labeler
+
+on:
+  pull_request:
+    types: [opened]
+  schedule:
+    - cron: '0 0 * * *'
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Attach label on PR opened
+        if: github.event_name == 'pull_request'
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-date: ${{ github.event.pull_request.created_at }}
+          pr-number: ${{ github.event.pull_request.number }}
+
+      - name: Update labels on schedule
+        if: github.event_name == 'schedule'
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-date: ${{ github.event.pull_request.created_at }}
+
+      - name: Reset label on review submitted
+        if: github.event_name == 'pull_request_review'
+        uses: ./
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          base-date: ${{ github.event.review.submitted_at }}
+          pr-number: ${{ github.event.pull_request.number }}
