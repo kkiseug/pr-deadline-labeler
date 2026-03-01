@@ -25,11 +25,13 @@ public class Main {
             LabelingService labelingService = new LabelingService(labelAttacher, pullRequestRepository, labelPolicy);
 
             LocalDate now = LocalDate.now();
-            if (prNumber == null) {
+            if (prNumber == null || prNumber.isEmpty()) {
                 labelingService.attachLabels(now);
             } else {
-                LocalDate realBaseDate = LocalDate.parse(baseDate,
-                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'"));
+                LocalDate realBaseDate = LocalDate.parse(
+                    baseDate,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
+                );
 
                 long prNum = Long.parseLong(prNumber);
                 labelingService.attachLabel(prNum, realBaseDate, now);

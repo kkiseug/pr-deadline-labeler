@@ -19,7 +19,17 @@ public class PullRequest {
         if (isOverDue()) return;
 
         String label = labelPolicy.resolve(createdAt, today);
+        String currentDnLabel = getCurrentDnLabel();
+
         labelAttacher.attach(prNumber, currentLabels, label);
+        System.out.printf("성공적으로 #%d 라벨을 업데이트 했습니다. (%s -> %s)%n", prNumber, currentDnLabel, label);
+    }
+
+    private String getCurrentDnLabel() {
+        return currentLabels.stream()
+            .filter(currentLabel -> currentLabel.startsWith("D-") || currentLabel.equals("OVER-DUE"))
+            .findFirst()
+            .orElse("없음");
     }
 
     private boolean isOverDue() {
