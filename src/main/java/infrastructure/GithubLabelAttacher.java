@@ -85,9 +85,7 @@ public class GithubLabelAttacher implements LabelAttacher {
             .build();
 
         try {
-            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
-            System.out.println("라벨 부착 응답 코드: " + response.statusCode());
-            System.out.println("라벨 부착 응답 바디: " + response.body());
+            httpClient.send(request, BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException("라벨 부착 실패", e);
         }

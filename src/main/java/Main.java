@@ -17,10 +17,6 @@ public class Main {
         String prNumber = System.getenv("INPUT_PR-NUMBER");
         String deadline = System.getenv("INPUT_DEADLINE-DAYS");
 
-        System.out.println("repo: " + repo);
-        System.out.println("baseDate: " + baseDate);
-        System.out.println("prNumber: " + prNumber);
-
         HttpClient httpClient = HttpClient.newHttpClient();
         LabelAttacher labelAttacher = new GithubLabelAttacher(httpClient, token, repo);
         PullRequestRepository pullRequestRepository = new GithubPullRequestRepository(httpClient, token, repo);
