@@ -16,7 +16,14 @@ public class PullRequest {
     }
 
     public void labelAttach(LabelAttacher labelAttacher, LabelPolicy labelPolicy, LocalDate today) {
+        if (isOverDue()) return;
+
         String label = labelPolicy.resolve(createdAt, today);
         labelAttacher.attach(prNumber, currentLabels, label);
+    }
+
+    private boolean isOverDue() {
+        return currentLabels.stream()
+            .anyMatch(label -> label.equals("OVER-DUE"));
     }
 }
