@@ -2,8 +2,8 @@ plugins {
     id("java")
 }
 
-group = "test"
-version = "0.0.1"
+group = "deadline-labeler"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
