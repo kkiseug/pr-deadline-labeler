@@ -18,8 +18,7 @@ import java.util.List;
 
 public class GithubPullRequestRepository implements PullRequestRepository {
 
-    private static final String BASE_URL = "https://api.github.com/repos/%s/pulls?state=open";
-    private static final String BASE_LABEL_URL = "https://api.github.com/repos/%s/issues/%d/labels";
+    private static final String BASE_URL = "https://api.github.com/repos/%s/pulls";
 
     private final HttpClient httpClient;
     private final String token;
@@ -34,7 +33,7 @@ public class GithubPullRequestRepository implements PullRequestRepository {
     @Override
     public List<PullRequest> getOpenPullRequest() {
         HttpRequest request = HttpRequest.newBuilder(
-                URI.create(String.format(BASE_URL, repo))
+                URI.create(String.format(BASE_URL + "?state=open", repo))
             )
             .header("Authorization", "Bearer " + token)
             .header("Accept", "application/vnd.github+json")
@@ -57,7 +56,8 @@ public class GithubPullRequestRepository implements PullRequestRepository {
                         LocalDate.parse(prResponse.createdAt(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
                         prResponse.labels().stream()
                             .map(LabelResponse::name)
-                            .toList()
+                            .toList(),
+                        prResponse.draft()
                     )
                 )
                 .toList();
@@ -67,9 +67,9 @@ public class GithubPullRequestRepository implements PullRequestRepository {
     }
 
     @Override
-    public List<String> getCurrentLabels(Long prNumber) {
+    public PullRequest findByPRNumber(Long prNumber) {
         HttpRequest request = HttpRequest.newBuilder(
-                URI.create(String.format(BASE_LABEL_URL, repo, prNumber))
+                URI.create(String.format(BASE_URL + "/%d", repo, prNumber))
             )
             .header("Authorization", "Bearer " + token)
             .header("Accept", "application/vnd.github+json")
@@ -80,17 +80,21 @@ public class GithubPullRequestRepository implements PullRequestRepository {
             HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString(StandardCharsets.UTF_8));
 
             Gson gson = new Gson();
-            List<LabelResponse> dto = gson.fromJson(
+            PullRequestResponse dto = gson.fromJson(
                 response.body(),
-                new TypeToken<List<LabelResponse>>() {
-                }.getType()
+                PullRequestResponse.class
             );
 
-            return dto.stream()
-                .map(LabelResponse::name)
-                .toList();
+            return new PullRequest(
+                dto.prNumber(),
+                LocalDate.parse(dto.createdAt(), DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")),
+                dto.labels().stream()
+                    .map(LabelResponse::name)
+                    .toList(),
+                dto.draft()
+            );
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("PR 라벨 목록 불러오기 실패", e);
+            throw new RuntimeException(String.format("PR #%d 불러오기 실패", prNumber), e);
         }
     }
 }

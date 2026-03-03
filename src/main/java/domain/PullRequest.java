@@ -8,15 +8,18 @@ public class PullRequest {
     private final Long prNumber;
     private final LocalDate createdAt;
     private final List<String> currentLabels;
+    private final boolean draft;
 
-    public PullRequest(Long prNumber, LocalDate createdAt, List<String> currentLabels) {
+    public PullRequest(Long prNumber, LocalDate createdAt, List<String> currentLabels, boolean draft) {
         this.prNumber = prNumber;
         this.createdAt = createdAt;
         this.currentLabels = currentLabels;
+        this.draft = draft;
     }
 
-    public void labelAttach(LabelAttacher labelAttacher, LabelPolicy labelPolicy, LocalDate today) {
+    public void labelAttach(LabelAttacher labelAttacher, LabelPolicy labelPolicy, boolean skipDraft, LocalDate today) {
         if (isOverDue()) return;
+        if (skipDraft && draft) return;
 
         String label = labelPolicy.resolve(createdAt, today);
         String currentDnLabel = getCurrentDnLabel();
@@ -25,9 +28,13 @@ public class PullRequest {
         System.out.printf("성공적으로 #%d 라벨을 업데이트 했습니다. (%s -> %s)%n", prNumber, currentDnLabel, label);
     }
 
+    public PullRequest withBaseDate(LocalDate baseDate) {
+        return new PullRequest(prNumber, baseDate, currentLabels, draft);
+    }
+
     private String getCurrentDnLabel() {
         return currentLabels.stream()
-            .filter(currentLabel -> currentLabel.startsWith("D-") || currentLabel.equals("OVER-DUE"))
+            .filter(currentLabel -> currentLabel.startsWith("D-"))
             .findFirst()
             .orElse("없음");
     }
