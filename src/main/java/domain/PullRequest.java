@@ -18,8 +18,14 @@ public class PullRequest {
     }
 
     public void labelAttach(LabelAttacher labelAttacher, LabelPolicy labelPolicy, boolean skipDraft, LocalDate today) {
-        if (isOverDue()) return;
-        if (skipDraft && draft) return;
+        if (isOverDue()) {
+            System.out.printf("OVER-DUE PR #%d 제외되었습니다.%n", prNumber);
+            return;
+        }
+        if (skipDraft && draft) {
+            System.out.printf("draft PR #%d 제외되었습니다.%n", prNumber);
+            return;
+        }
 
         String label = labelPolicy.resolve(createdAt, today);
         String currentDnLabel = getCurrentDnLabel();
