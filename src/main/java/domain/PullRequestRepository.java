@@ -6,5 +6,5 @@ public interface PullRequestRepository {
 
     List<PullRequest> getOpenPullRequest();
 
-    List<String> getCurrentLabels(Long prNumber);
+    PullRequest findByPRNumber(Long prNumber);
 }

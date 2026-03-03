@@ -9,7 +9,9 @@ public record PullRequestResponse(
     @SerializedName("created_at")
     String createdAt,
     @SerializedName("labels")
-    List<LabelResponse> labels
+    List<LabelResponse> labels,
+    @SerializedName("draft")
+    boolean draft
 ) {
 
     public record LabelResponse(
@@ -36,5 +38,10 @@ public record PullRequestResponse(
     @Override
     public List<LabelResponse> labels() {
         return labels;
+    }
+
+    @Override
+    public boolean draft() {
+        return draft;
     }
 }
