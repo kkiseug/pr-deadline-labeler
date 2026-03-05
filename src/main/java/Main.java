@@ -26,7 +26,7 @@ public class Main {
             LabelPolicy labelPolicy = new LabelPolicy(Long.parseLong(rawDeadlineDays));
             LabelingService labelingService = new LabelingService(labelAttacher, pullRequestRepository, labelPolicy);
 
-            LocalDate now = LocalDate.now(ZoneId.of("Asia/Seoul"));
+            LocalDate now = LocalDate.now(ZoneId.of("UTC"));
             boolean skipDraft = Boolean.parseBoolean(rawSkipDraft);
             if (rawPrNumber == null || rawPrNumber.isEmpty()) {
                 labelingService.attachLabels(skipDraft, now);
