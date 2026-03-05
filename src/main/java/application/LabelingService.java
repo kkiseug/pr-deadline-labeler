@@ -5,7 +5,6 @@ import domain.LabelPolicy;
 import domain.PullRequest;
 import domain.PullRequestRepository;
 import java.time.LocalDate;
-import java.util.List;
 
 public class LabelingService {
 
